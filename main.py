@@ -1,8 +1,7 @@
-from services.downloader import download_reel
+
 
 
 def main():
-    download_reel(url="")
-
+    pass
 if __name__ == '__main__':
     main()
