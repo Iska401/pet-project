@@ -1,6 +1,6 @@
 import instaloader
 import requests
-from shortcode_extraction import extract_shortcode
+from .shortcode_extraction import extract_shortcode
 
 
 def download_reel(url: "str"):
@@ -11,7 +11,7 @@ def download_reel(url: "str"):
         video_url = post.video_url
         req = requests.get(video_url)
 
-        with open("../downloads/reel.mp4", "wb") as file:
+        with open("downloads/reel.mp4", "wb") as file:
             file.write(req.content)
 
     except instaloader.BadResponseException:
