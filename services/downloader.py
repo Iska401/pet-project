@@ -1,20 +1,37 @@
 import instaloader
 import requests
-from .shortcode_extraction import extract_shortcode
+from shortcode_extraction import extract_shortcode
 
 
-def download_reel(url: "str"):
+def download_inst_content(url: str) -> str | dict[str, str]:
 
     try:
         loader = instaloader.Instaloader()
         post = instaloader.Post.from_shortcode(loader.context, shortcode=extract_shortcode(url))
-        video_url = post.video_url
-        req = requests.get(video_url)
-
-        with open("downloads/reel.mp4", "wb") as file:
-            file.write(req.content)
+        if post.typename == "GraphVideo":
+            video_url = post.video_url
+        elif post.typename == "GraphImage":
+            image_url = post.url
 
     except instaloader.BadResponseException:
-        print("Bad connection or the reel doesnt exist.")
+        return "Bad connection or the reel doesnt exist."
 
-download_reel("https://www.instagram.com/reel/DYqFsjlRD1e/?igsh=cWFwc2Y5c3YxOHhj")
+    else:
+        if post.is_video:
+            with open("../downloads/reel.mp4", "wb") as file:
+                req = requests.get(video_url)
+                file.write(req.content)
+            return {
+                "type": "video",
+                "path": "../downloads/reel.mp4"
+            }
+
+        else:
+            with open("../downloads/content.jpg", "wb") as file:
+                req = requests.get(image_url)
+                file.write(req.content)
+            return {
+                "type": "image",
+                "path": "../downloads/content.jpg"
+            }
+# download_inst_content("https://www.instagram.com/p/DZnV9dvvBU7/?igsh=NTM0bDgzOTlwZmth")
