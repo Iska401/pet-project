@@ -55,11 +55,11 @@ def ai_response() -> str:
         )
 
     except Exception as e:
-        return f"Error: {e}"
+        raise e
     else:
         event = response.output_parsed
         with open('./downloads/response.json','w') as f:
-            json.dump(event.model_dump(),
+            json.dump([event.model_dump()],
                       f,
                       ensure_ascii=False,
                       indent=4)
