@@ -8,6 +8,7 @@ def download_inst_content(url: str) -> str | dict[str, str]:
     try:
         loader = instaloader.Instaloader()
         post = instaloader.Post.from_shortcode(loader.context, shortcode=extract_shortcode(url))
+        caption = post.caption
         if post.typename == "GraphVideo":
             video_url = post.video_url
         elif post.typename == "GraphImage":
@@ -23,7 +24,8 @@ def download_inst_content(url: str) -> str | dict[str, str]:
                 file.write(req.content)
             return {
                 "type": "video",
-                "path": "../downloads/reel.mp4"
+                "path": "../downloads/reel.mp4",
+                "caption": caption
             }
 
         else:
@@ -32,6 +34,7 @@ def download_inst_content(url: str) -> str | dict[str, str]:
                 file.write(req.content)
             return {
                 "type": "image",
-                "path": "../downloads/content.jpg"
+                "path": "../downloads/content.jpg",
+                "caption": caption
             }
 # download_inst_content("https://www.instagram.com/p/DZnV9dvvBU7/?igsh=NTM0bDgzOTlwZmth")
