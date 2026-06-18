@@ -8,16 +8,10 @@ def transcription(url: str) -> str:
     model_size = "large-v2"
     text = ""
     model = WhisperModel(model_size, device="cpu", compute_type="int8")
+    caption = download_inst_content(url)['caption']
+    segments, info = model.transcribe(download_inst_content(url)["path"], beam_size=5)
 
-    if download_inst_content(url)["type"] == "video":
-        try:
-            segments, info = model.transcribe(download_inst_content(url)["path"], beam_size=5)
-        except av.error.FileNotFoundError:
-            return "File not found"
+    for segment in segments:
+        text += segment.text
 
-        else:
-            for segment in segments:
-                text += segment.text
-
-            return text
-
+    return text + caption
