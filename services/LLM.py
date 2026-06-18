@@ -1,16 +1,11 @@
 import os
+import json
 from openai import OpenAI
 from pydantic import BaseModel
 from utils.chooser import choose
 from dotenv import load_dotenv
 from typing import Optional
 
-
-load_dotenv()
-
-api_key = os.getenv("OPENAI_API_KEY")
-
-client = OpenAI(api_key=api_key)
 
 class Event(BaseModel):
     link: Optional[str] = None
@@ -24,6 +19,12 @@ class Event(BaseModel):
     location: Optional[str] = None
 
 def ai_response() -> str:
+    load_dotenv()
+
+    api_key = os.getenv("OPENAI_API_KEY")
+
+    client = OpenAI(api_key=api_key)
+
     try:
         response = client.responses.parse(
             model="gpt-5.4-mini",
@@ -57,6 +58,10 @@ def ai_response() -> str:
         return f"Error: {e}"
     else:
         event = response.output_parsed
-        with open('downloads/response.json','w') as f:
-            f.write(event.dumps(event))
-        return 'downloads/response.json'
+        with open('./downloads/response.json','w') as f:
+            json.dump(event.model_dump(),
+                      f,
+                      ensure_ascii=False,
+                      indent=4)
+
+        return './downloads/response.json'

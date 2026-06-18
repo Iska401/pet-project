@@ -1,5 +1,5 @@
 import easyocr
-from downloader import download_inst_content
+from .downloader import download_inst_content
 
 
 def reading_image(url: str) -> str:
