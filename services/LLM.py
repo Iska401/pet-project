@@ -18,7 +18,7 @@ class Event(BaseModel):
     is_free: Optional[bool] = None
     location: Optional[str] = None
 
-def ai_response() -> str:
+def ai_response(url: str) -> str:
     load_dotenv()
 
     api_key = os.getenv("OPENAI_API_KEY")
@@ -30,9 +30,9 @@ def ai_response() -> str:
             model="gpt-5.4-mini",
             input=[
                 {"role": "system", "content":
-                    """
+                    f"""
                     Extract event information from the provided text.
-                    
+                    There is the link by the way: {url}
                     If a field is missing, return null.
                     
                     Only extract:
@@ -48,7 +48,7 @@ def ai_response() -> str:
                     """},
                 {
                     "role": "user",
-                    "content": choose("https://www.instagram.com/reel/DZehb7JIyDh/?igsh=ZmFzdTJoejU4OG1y"),
+                    "content": choose(url),
                 },
             ],
             text_format=Event,
