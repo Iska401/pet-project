@@ -1,11 +1,10 @@
-import av.error
 from faster_whisper import WhisperModel
-from downloader import download_inst_content
+from .downloader import download_inst_content
 
 
 def transcription(url: str) -> str:
 
-    model_size = "large-v2"
+    model_size = "medium"
     text = ""
     model = WhisperModel(model_size, device="cpu", compute_type="int8")
     caption = download_inst_content(url)['caption']
