@@ -48,7 +48,7 @@ pet-project/
 Clone the repository:
 
 ```bash
-git clone <repository_url>
+git clone https://github.com/Iska401/pet-project.git
 cd pet-project
 ```
 
