@@ -29,6 +29,7 @@ The application:
 * OpenAI API
 * Pandas
 * Pydantic
+* Faster-whisper
 
 ## Project Structure
 
